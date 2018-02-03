@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable class-methods-use-this */
-const { LimitedArray, getIndexBelowMax } = require('./hash-table-helpers');
+const { LimitedArray, getIndexBelowMax, LinkedList } = require('./hash-table-helpers');
 
 class HashTable {
   constructor(limit = 8) {
@@ -34,13 +34,20 @@ class HashTable {
   // If no bucket has been created for that index, instantiate a new bucket and add the key, value pair to that new bucket
   // If the key already exists in the bucket, the newer value should overwrite the older value associated with that key
   insert(key, value) {
-    if (this.capacityIsFull()) this.resize();
+    if (this.capacityIsFull()) this.resize(); 
     const index = getIndexBelowMax(key.toString(), this.limit);
-    let bucket = this.storage.get(index) || [];
+    const bucket = new LinkedList();
+    const newNode = bucket.newNode(key, value);
+    
+    if (newNode = null) {
+      this.tail = newNode;
+      this.head = newNode;
+    }
+    /* let bucket = this.storage.get(index) || [];
 
     bucket = bucket.filter(item => item[0] !== key);
     bucket.push([key, value]);
-    this.storage.set(index, bucket);
+    this.storage.set(index, bucket); */
   }
   // Removes the key, value pair from the hash table
   // Fetch the bucket associated with the given key using the getIndexBelowMax function
